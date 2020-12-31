@@ -30,7 +30,7 @@ const upload = multer({
 }).single('image')
 
 
-
+/* Save user supplied image on server under /images */
 router.post('/images/upload', (req, res) => {
     upload(req, res, function (err) {
         if (err) {
@@ -42,6 +42,7 @@ router.post('/images/upload', (req, res) => {
     })
 })
 
+/* Send Image Binary to Client for viewing */
 router.get('/images/:imagename', async (req, res) => {
     let imagename = req.params.imagename
     let imagepath = __dirname + "/images/" + imagename
@@ -53,10 +54,8 @@ router.get('/images/:imagename', async (req, res) => {
 	res.end(image, 'binary')
 })
 
-
 router.post('/housing', (req, res) => {
 	let post = req.body
-	// console.log(house)
 	let sql = "INSERT INTO housingTable (email, image, bed, bath, price, moveIn, location, type, date, other) VALUES (?,?,?,?,?,?,?,?,?,?) ";
 	db.run(sql, post.email, post.image, post.bed, post.bath, post.price, post.moveIn, post.location, post.type, post.date, post.other, (err) => {
 		if (err) {
@@ -69,8 +68,17 @@ router.post('/housing', (req, res) => {
 })
 
 
-router.post('/housing/:id', (req, res) => {
-    
+router.get('/housing/:id', (req, res) => {
+    let postId = req.params.id
+	let sql = "SELECT * FROM housingTable WHERE id = ?";
+	db.get(sql, postId, (err, val) => {
+		if (err) {
+			console.log("DB insert error", err.message);
+			throw err;
+        } else {
+            res.send(val || {});
+        }
+	})
 })
 
 router.get('/', (req, res) => {

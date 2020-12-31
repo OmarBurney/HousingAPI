@@ -22,7 +22,7 @@ db.serialize(() => {
 function createHousingDB() {
 	const sql = (
 		`CREATE TABLE housingTable (
-			id TEXT PRIMARY KEY UNIQUE,
+			id INTEGER PRIMARY KEY UNIQUE,
 			email TEXT,
 			image TEXT,
 			bed INTEGER,
