@@ -1,14 +1,20 @@
 'use strict'
 
-const express = require('express')
+// Image Hnadling
 const multer = require('multer')
 const fileType = require('file-type')
 const fs = require('fs')
-const mysql = require('mysql');
+
+// Database
+const db = require('./database.model')
+
+// Routing
+const express = require('express')
 const app = express()
 const router = express.Router()
+const path = require('path');
+const port = process.env.PORT || 3000;
 
-const port 	   = process.env.PORT || 8080;
 
 const upload = multer({
     dest:'images/', 
@@ -16,7 +22,6 @@ const upload = multer({
     fileFilter:  (req, file, callback) => {
     
         if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-
             return callback(new Error('Only Images are allowed !'), false)
         }
 
@@ -24,16 +29,13 @@ const upload = multer({
     }
 }).single('image')
 
+
+
 router.post('/images/upload', (req, res) => {
-
     upload(req, res, function (err) {
-
         if (err) {
-
             res.status(400).json({message: err.message})
-
         } else {
-
             let path = `/images/${req.file.filename}`
             res.status(200).json({message: 'Image Uploaded Successfully !', path: path})
         }
@@ -41,7 +43,6 @@ router.post('/images/upload', (req, res) => {
 })
 
 router.get('/images/:imagename', async (req, res) => {
-
     let imagename = req.params.imagename
     let imagepath = __dirname + "/images/" + imagename
     let image = fs.readFileSync(imagepath)
@@ -53,16 +54,38 @@ router.get('/images/:imagename', async (req, res) => {
 })
 
 
+router.post('/housing', (req, res) => {
+	let post = req.body
+	// console.log(house)
+	let sql = "INSERT INTO housingTable (email, image, bed, bath, price, moveIn, location, type, date, other) VALUES (?,?,?,?,?,?,?,?,?,?) ";
+	db.run(sql, post.email, post.image, post.bed, post.bath, post.price, post.moveIn, post.location, post.type, post.date, post.other, (err) => {
+		if (err) {
+			console.log("DB insert error", err.message);
+			throw err;
+        } else {
+            res.send({message: "Upload Successful!"});
+        }
+	})
+})
+
+
+router.post('/housing/:id', (req, res) => {
+    
+})
+
+router.get('/', (req, res) => {
+	res.sendFile(path.join(__dirname, 'index.html'))
+})
+
+
+app.use(express.json());
 app.use('/', router)
 
 app.use((err, req, res, next) => {
 
     if (err.code == 'ENOENT') {
-        
         res.status(404).json({message: 'Image Not Found !'})
-
     } else {
-
         res.status(500).json({message:err.message}) 
     } 
 })
