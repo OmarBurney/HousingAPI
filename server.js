@@ -68,6 +68,20 @@ router.post('/housing', (req, res) => {
 })
 
 
+router.get('/housing/all', (req, res) => {
+	let sql = "SELECT * FROM housingTable";
+	db.all(sql, (err, val) => {
+		if (err) {
+			console.log("DB insert error", err.message);
+			throw err;
+        } else {
+            res.send(val || {});
+        }
+	})
+	// console.log("works")
+	// res.send({message: "yay"});
+})
+
 router.get('/housing/:id', (req, res) => {
     let postId = req.params.id
 	let sql = "SELECT * FROM housingTable WHERE id = ?";
