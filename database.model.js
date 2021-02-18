@@ -24,15 +24,15 @@ function createHousingDB() {
 		`CREATE TABLE housingTable (
 			id INTEGER PRIMARY KEY UNIQUE,
 			email TEXT,
-			image TEXT,
+			type TEXT,
 			bed INTEGER,
 			bath INTEGER,
 			price INTEGER,
 			moveIn TEXT,
 			location TEXT,
-			type TEXT,
+			desc TEXT,
 			date TEXT,
-			other TEXT
+			image TEXT
 		)`
 	);
 
@@ -44,5 +44,5 @@ function createHousingDB() {
 		}
 	});
 }
-
+//https://housingapi.omarburney1.repl.co/
 module.exports = db;
