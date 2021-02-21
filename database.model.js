@@ -28,6 +28,7 @@ function createHousingDB() {
 			bed INTEGER,
 			bath INTEGER,
 			price INTEGER,
+            covidTested TEXT,
 			moveIn TEXT,
 			location TEXT,
 			desc TEXT,

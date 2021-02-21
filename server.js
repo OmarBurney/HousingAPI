@@ -32,6 +32,7 @@ const upload = multer({
 
 /* Save user supplied image on server under /images */
 router.post('/images/upload', (req, res) => {
+    console.log("/images/upload")
     upload(req, res, function (err) {
         if (err) {
             res.status(400).json({message: err.message})
@@ -44,6 +45,7 @@ router.post('/images/upload', (req, res) => {
 
 /* Send Image Binary to Client for viewing */
 router.get('/images/:imagename', async (req, res) => {
+    console.log("/images/:imagename")
     let imagename = req.params.imagename
     let imagepath = __dirname + "/images/" + imagename
     let image = fs.readFileSync(imagepath)
@@ -55,9 +57,10 @@ router.get('/images/:imagename', async (req, res) => {
 })
 
 router.post('/housing', (req, res) => {
+    console.log("/housing")
 	let post = req.body
-	let sql = "INSERT INTO housingTable (email, type, bed, bath, price, moveIn, location, desc, date, image) VALUES (?,?,?,?,?,?,?,?,?,?) ";
-	db.run(sql, post.email, post.image, post.bed, post.bath, post.price, post.moveIn, post.location, post.type, post.date, post.other, (err) => {
+	let sql = "INSERT INTO housingTable (email, type, bed, bath, price, covidTested, moveIn, location, desc, date, image) VALUES (?,?,?,?,?,?,?,?,?,?) ";
+	db.run(sql, post.email, post.type, post.bed, post.bath, post.price, post.covidTested, post.moveIn, post.location, post.desc, post.date, post.image, (err) => {
 		if (err) {
 			console.log("DB insert error", err.message);
 			throw err;
@@ -69,6 +72,7 @@ router.post('/housing', (req, res) => {
 
 
 router.get('/housing/all', (req, res) => {
+    console.log("/housing/all")
 	let sql = "SELECT * FROM housingTable";
 	db.all(sql, (err, val) => {
 		if (err) {
