@@ -59,7 +59,7 @@ router.get('/images/:imagename', async (req, res) => {
 router.post('/housing', (req, res) => {
     console.log("/housing")
 	let post = req.body
-	let sql = "INSERT INTO housingTable (email, type, bed, bath, price, covidTested, moveIn, location, desc, date, image) VALUES (?,?,?,?,?,?,?,?,?,?) ";
+	let sql = "INSERT INTO housingTable (email, type, bed, bath, price, covidTested, moveIn, location, desc, date, image) VALUES (?,?,?,?,?,?,?,?,?,?,?) ";
 	db.run(sql, post.email, post.type, post.bed, post.bath, post.price, post.covidTested, post.moveIn, post.location, post.desc, post.date, post.image, (err) => {
 		if (err) {
 			console.log("DB insert error", err.message);
